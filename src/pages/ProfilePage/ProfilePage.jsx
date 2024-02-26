@@ -12,11 +12,16 @@ import ProfileHeader from "../../components/Profile/ProfileHeader";
 import ProfilePosts from "../../components/Profile/ProfilePosts";
 import ProfileTabs from "../../components/Profile/ProfileTabs";
 import { useParams } from "react-router-dom";
+import useShowToast from "../../hooks/useShowToast";
 import useGetUserProfileByUserName from "../../hooks/useGetUserProfileByUserName";
 
 const ProfilePage = () => {
+  const showToast = useShowToast();
   const { username } = useParams();
-  const { isLoading, userProfile } = useGetUserProfileByUserName(username);
+  const { isLoading, userProfile } = useGetUserProfileByUserName(
+    username,
+    showToast
+  );
   const userNotFound = !isLoading && !userProfile;
   if (userNotFound) return <UserNotFound />;
   return (

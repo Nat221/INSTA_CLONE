@@ -1,13 +1,13 @@
 import { useState } from "react";
-import useShowToast from "./useShowToast";
+
 import { useEffect } from "react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { firestore } from "../firebase/firebase";
 import useUserProfileStore from "../store/userProfileStore";
 
-const useGetUserProfileByUserName = (username) => {
+const useGetUserProfileByUserName = (username, showToast) => {
   const [isLoading, setIsLoading] = useState(true);
-  const showToast = useShowToast();
+
   const { userProfile, setUserProfile } = useUserProfileStore();
 
   useEffect(() => {
