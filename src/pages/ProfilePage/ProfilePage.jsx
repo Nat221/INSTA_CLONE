@@ -1,31 +1,28 @@
 import {
   Container,
-  Link,
-  Text,
   Flex,
-  VStack,
-  SkeletonCircle,
+  Link,
   Skeleton,
+  SkeletonCircle,
+  Text,
+  VStack,
 } from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom";
 import ProfileHeader from "../../components/Profile/ProfileHeader";
-import ProfilePosts from "../../components/Profile/ProfilePosts";
 import ProfileTabs from "../../components/Profile/ProfileTabs";
+import ProfilePosts from "../../components/Profile/ProfilePosts";
+import useGetUserProfileByUsername from "../../hooks/useGetUserProfileByUsername";
 import { useParams } from "react-router-dom";
-import useShowToast from "../../hooks/useShowToast";
-import useGetUserProfileByUserName from "../../hooks/useGetUserProfileByUserName";
+import { Link as RouterLink } from "react-router-dom";
 
 const ProfilePage = () => {
-  const showToast = useShowToast();
   const { username } = useParams();
-  const { isLoading, userProfile } = useGetUserProfileByUserName(
-    username,
-    showToast
-  );
+  const { isLoading, userProfile } = useGetUserProfileByUsername(username);
+
   const userNotFound = !isLoading && !userProfile;
   if (userNotFound) return <UserNotFound />;
+
   return (
-    <Container maxW={"container.lg"} py={5}>
+    <Container maxW="container.lg" py={5}>
       <Flex
         py={10}
         px={4}
@@ -45,7 +42,8 @@ const ProfilePage = () => {
         borderColor={"whiteAlpha.300"}
         direction={"column"}
       >
-        <ProfileTabs /> <ProfilePosts />
+        <ProfileTabs />
+        <ProfilePosts />
       </Flex>
     </Container>
   );
@@ -53,6 +51,7 @@ const ProfilePage = () => {
 
 export default ProfilePage;
 
+// skeleton for profile header
 const ProfileHeaderSkeleton = () => {
   return (
     <Flex

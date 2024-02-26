@@ -1,13 +1,12 @@
-import { useState } from "react";
-
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import useShowToast from "./useShowToast";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { firestore } from "../firebase/firebase";
 import useUserProfileStore from "../store/userProfileStore";
 
-const useGetUserProfileByUserName = (username, showToast) => {
+const useGetUserProfileByUsername = (username) => {
   const [isLoading, setIsLoading] = useState(true);
-
+  const showToast = useShowToast();
   const { userProfile, setUserProfile } = useUserProfileStore();
 
   useEffect(() => {
@@ -21,22 +20,25 @@ const useGetUserProfileByUserName = (username, showToast) => {
         const querySnapshot = await getDocs(q);
 
         if (querySnapshot.empty) return setUserProfile(null);
+
         let userDoc;
         querySnapshot.forEach((doc) => {
           userDoc = doc.data();
         });
-        console.log(userDoc);
+
         setUserProfile(userDoc);
+        console.log(userDoc);
       } catch (error) {
         showToast("Error", error.message, "error");
       } finally {
         setIsLoading(false);
       }
     };
+
     getUserProfile();
   }, [setUserProfile, username, showToast]);
 
   return { isLoading, userProfile };
 };
 
-export default useGetUserProfileByUserName;
+export default useGetUserProfileByUsername;
